@@ -1,6 +1,7 @@
 
 import Contact from './components/contact/Contact';
 import './App.css';
+import { Todo } from './components/todo/Todo';
 
 // import Contact from './component/'
 
@@ -27,13 +28,13 @@ const data = [
     data : ['own', 'bod','green'],
   },
 ]
+// const contacts = data.map( contact => <Contact name={contact.name} key={contact.phone} phone={contact.phone} data={contact.data} />)
+{/* {contacts} */}
 
 function App() {
-  const contacts = data.map( contact => <Contact name={contact.name} key={contact.phone} phone={contact.phone} data={contact.data} />)
   return (
     <div className="App">
-      {contacts} 
-    
+      <Todo />
     </div>
   );
 }
