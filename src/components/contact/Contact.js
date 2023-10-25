@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Colors from '../colors/Colors'
+import NickNames from '../nickNames/NickNames'
 import './style.css';
 
 // let num = 10;
@@ -24,7 +24,7 @@ function Contact(props){
         <button onClick={countMins}>-</button>
         <p>{count}</p>
         <button onClick={numPlus}>+</button>
-        <Colors data={props.data}/>
+        <NickNames data={props.data}/>
     </div>;
 }
 export default Contact
