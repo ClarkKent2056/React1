@@ -2,6 +2,7 @@ import { useState } from "react";
 export const CreateInput = (props) => {
   const [valAdd, setValAdd] = useState("");
   const click = () => {
+    if(valAdd.length < 3) return;
     setValAdd('')
     props.addElem(valAdd)
 
@@ -9,13 +10,13 @@ export const CreateInput = (props) => {
   const change = (e) => setValAdd(e.target.value)
   
   return (
-    <div className="addTask">
+    <div className="addTask displayflex">
       <input
         type="text"
         value={valAdd}
         onChange={change}
       />
-      <button onClick={click}>ADD</button>
+      <button className="btnAdd" onClick={click}>ADD</button>
     </div>
   );
 };

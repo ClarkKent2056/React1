@@ -16,13 +16,31 @@ const data = [
     isActive: true,
   },
 ];
+const LS = {
+  save: (dat) => localStorage.setItem("elemToDo", JSON.stringify(dat)),
+  get: () => JSON.parse(localStorage.getItem("elemToDo")),
+};
 
 export const Todo = () => {
   const [list, setList] = useState(data);
 
-  const removeElem = (id) => setList( data.filter(elem => elem.id !== id))
-  
+  const removeElem = (id) => {
+    setList(list.filter(elem => elem.id !== id));
+    // LS.save(list);
+  }
+  const statusCheckBox = (s, id) => {
+    setList((list.map(elem => elem.id == id ? {isActive: s, "id" : id, text : elem.text} : elem
+    )));
+    // LS.save(list)
+  }
+  const changeText = (text, id) =>{
+    setList((list.map(elem => elem.id == id ? {isActive: elem.isActive, "id" : id, 'text' : text} : elem
+    )));
+    // LS.save(list)
+
+  }
   const addElem = (val) => {
+    
     const newList = {
       text: val,
       id: id(),
@@ -30,16 +48,27 @@ export const Todo = () => {
     };
 
     setList([...list, newList]);
+    // LS.save(list)
   };
-  const memoData = list.map((elem) => (
-    <Task id={elem.id} text={elem.text} isActive={elem.isActive} key={elem.id} removeElem={removeElem}/>
-  ));
+  const memoData = list.map((elem) => (<Task id={elem.id} text={elem.text} isActive={elem.isActive} key={elem.id} changeText={changeText} removeElem={removeElem} statusCheckBox={statusCheckBox}/>));
   return (
-    <div>
+    <div className="w100">
       <CreateInput addElem={addElem} />
-      {memoData}
+      <div className="contToDo w100 flexColumn"> {memoData}</div>
 
-      {2 > 1 ? <p>sadas</p> : <button>casa</button>}
+      
     </div>
   );
 };
+// (()=>{
+//   const lsDat = LS.get();
+//   if(lsDat !== null){
+//     data.forEach((elem, i)=>{
+//      i > lsDat.length - 1 && data.push({})
+//      elem.text = lsDat[i].text;
+//      elem.id = lsDat[i].id;
+//      elem.isActive = lsDat[i].isActive
+//     })
+//   }
+ 
+// })()
