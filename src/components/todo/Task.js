@@ -4,13 +4,12 @@ export const Task = (props) => {
   const [status, setStatus] = useState(props.isActive)
   const [inp, setInp] = useState(false)
   const [text, setText] = useState(props.text);
-
+  
   
   const removeEl = () => props.removeElem(props.id)
   const checkboxChange = () =>{
     setStatus(!status);
-    props.statusCheckBox(status, props.id)
-    
+    props.statusCheckBox(!status, props.id)
   }
   const saveText = () =>{
      setInp(!inp);
@@ -19,8 +18,8 @@ export const Task = (props) => {
   }
   
   return (
-    <div className={`displayflex task ${status ? 'green' : 'blue'}`} >
-        <input type='checkbox' checked={status} onChange={checkboxChange}/>
+    <div className={`displayflex task ${props.isActive ? 'green' : 'blue'}`} >
+        <input type='checkbox' checked={props.isActive} onChange={checkboxChange}/>
         {inp ? <input type='text' autoFocus value={text} onChange={(e)=> setText(e.target.value)} onBlur={saveText} /> :<h4 onDoubleClick={()=> setInp(!inp)}>{props.text}</h4>}
         <button onClick={removeEl}>X</button>
     </div>
