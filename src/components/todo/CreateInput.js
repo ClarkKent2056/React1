@@ -1,5 +1,7 @@
-import { useState } from "react";
-export const CreateInput = (props) => {
+import { memo, useState } from "react";
+let i = 1;
+ const CreateInput = (props) => {
+  console.log('CreateInput-----',i++ );
   const [valAdd, setValAdd] = useState("");
   const click = () => {
     if(valAdd.length < 3) return;
@@ -20,3 +22,13 @@ export const CreateInput = (props) => {
     </div>
   );
 };
+
+const memoFun = (prevProps, nextProps) => {
+  // return false
+  // if(prevProps.l === nextProps.l) return true
+  // return false  
+  // console.log(prevProps);
+  // console.log(nextProps);
+}
+
+export default memo(CreateInput, memoFun)

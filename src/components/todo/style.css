@@ -1,3 +1,19 @@
+.header{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 40px;
+
+}
+.header a{
+    text-decoration: none;
+    color: black;
+    transition: all 0.3s;
+    font-family: sans-serif;
+}
+.header a:hover{
+    color: blue;
+}
 .displayflex{
     display: flex;
     gap: 10px;
@@ -69,6 +85,8 @@
 .task button{
     border: none;
     color: white;
+    width: 26px;
+    height: 26px;
     font-family: sans-serif;
     background-color: red;
     border-radius: 50%;
