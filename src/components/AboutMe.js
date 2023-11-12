@@ -3,7 +3,9 @@
 
 const AboutMe = () => {
     return (
-        <div></div>
+        <div>
+            AboutMe
+        </div>
     )
 }
 export default AboutMe;

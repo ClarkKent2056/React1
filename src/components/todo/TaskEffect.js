@@ -1,18 +1,14 @@
 import React, { memo } from "react";
 import { useState } from "react";
-let i = 1;
-const Task = (props) => {
-  console.log("Task-----", i++);
+import { T } from './TodoEffect'
+const TaskEffect = (props) => {
   // const [status, setStatus] = useState(props.isActive)
   const [inp, setInp] = useState(false);
   const [text, setText] = useState(props.text);
 
   const removeEl = () => props.removeElem(props.id);
-  const checkboxChange = (e) => {
-    // setStatus(!status);
-    props.statusCheckBox(e.target.checked, props.id);
-     
-  };
+  const checkboxChange = (e) => props.setAction({s : e.target.checked, id : props.id, type : T.CHANGE_ACTIVE})
+  
   const saveText = () => {
     setInp(!inp);
     if (text.lenght < 3) return;
@@ -48,4 +44,4 @@ const memoFnc = (prevProps, nextProps) => {
 
   // console.log(prevProps.isActive,nextProps.isActive);
 };
-export default memo(Task, memoFnc);
+export default memo(TaskEffect, memoFnc);

@@ -7,4 +7,4 @@
 
 // props
 
-// 
+// Promise | Promis.all | Event Loop | mic mac

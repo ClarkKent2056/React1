@@ -2,7 +2,12 @@
 import Contact from './components/contact/Contact';
 import './App.css';
 import { Todo } from './components/todo/Todo';
-
+import { Route, Routes } from 'react-router-dom';
+import { Home } from './components/Home'
+import Settings from './components/Settings'
+import AboutMe from './components/AboutMe'
+import Header from './components/Header'
+import { TodoEffect } from './components/todo/TodoEffect'
 // import Contact from './component/'
 
 
@@ -34,9 +39,18 @@ const data = [
 function App() {
   return (
     <div className="App">
-      <Todo />
+      <Header />
+      {/* <Todo /> */}
+      <Routes>
+          <Route  path="/" element={<Home />} />
+          <Route  path="/todo" element={<Todo />} />
+          <Route  path="/settings" element={<Settings />} />
+          <Route  path="/aboutMe" element={<AboutMe />} />
+          <Route  path="/todoEffect" element={<TodoEffect />} />
+      </Routes>
     </div>
   );
 }
+
 
 export default App;
