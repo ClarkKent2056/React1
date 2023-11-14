@@ -39,7 +39,7 @@ const data = [
 function App() {
   return (
     <div className="App">
-      <Header />
+      <Header /> 
       {/* <Todo /> */}
       <Routes>
           <Route  path="/" element={<Home />} />

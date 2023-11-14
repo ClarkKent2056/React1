@@ -11,6 +11,7 @@ let i = 1;
   };
   const change = (e) => setValAdd(e.target.value)
   
+  
   return (
     <div className="addTask displayflex">
       <input
