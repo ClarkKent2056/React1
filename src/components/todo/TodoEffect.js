@@ -1,10 +1,9 @@
 import id from "shortid";
 import "./style.css";
-import CreateInput  from "./CreateInput";
-import Task from "./Task";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 import CreateInputEffect from "./CreateInputEffect";
 import TaskEffect from "./TaskEffect";
+import { contextToDo } from "../../store/todo.context";
 const data = [
   {
     text: "some text",
@@ -22,23 +21,30 @@ export const T = {
   ADD : 'ADD',
   REMOVE : 'REMOVE',
   CHANGE_TEXT : 'CHANGE_TEXT' ,
-  CHANGE_ACTIVE : 'CHANGE_ACTIVE'
+  CHANGE_ACTIVE : 'CHANGE_ACTIVE',
 }
 
 export const TodoEffect = () => {
-  const [list, setList] = useState(data) //3 4 5 6
-  const [action, setAction] = useState({})
+  const context = useContext(contextToDo)
   useEffect(() => {
-    switch(action.type) {
-      case T.ADD : addElem(action.text) ; break
-      case T.CHANGE_ACTIVE : statusCheckBox(action.s, action.id) ; break
+    switch(context.action.type) {
+      case T.ADD : addElem(context.action.text) ; break
+      case T.CHANGE_ACTIVE : statusCheckBox(context.action.s, context.action.id) ; break
+      case T.CHANGE_TEXT : changeText(context.action.text, context.action.id) ; break
+      case T.REMOVE : removeElem(context.action.id) ; break
     } 
   
-  },[action])
-
-  const removeElem = useCallback( (id) => setList(list.filter(elem => elem.id !== id)), [list]);
-  const statusCheckBox = (s, id) => setList((list.map(elem => elem.id == id ? {isActive: s, "id" : id, text : elem.text} : elem)));
-  const changeText = (text, id) => setList((list.map(elem => elem.id == id ? {isActive: elem.isActive, "id" : id, 'text' : text} : elem)));
+  },[context.action])
+  
+  const removeElem = useCallback((id) => context.changeList(context.list.filter(elem => elem.id !== id)), [context.list]);
+  const statusCheckBox = (s, id) => context.changeList((context.list.map(elem => {
+    elem.id == id && (elem.isActive = s);
+    return elem
+  })));
+  const changeText = useCallback((text, id) => context.changeList((context.list.map(elem => {
+    if(elem.id == id) {elem.text = text};
+    return elem 
+  }))), [context.list]);
 
   const addElem = useCallback((val) => {
     const newList = {
@@ -46,16 +52,17 @@ export const TodoEffect = () => {
       id: id(),
       isActive: false,
     };
-    setList([...list, newList]);
-  }, [action]);
+    context.changeList([...context.list, newList]);
+  }, [context.action]);
 
   const memoCreateInp = useMemo(
-    ()=><CreateInputEffect setAction={setAction} />,
-    [action]
+    () => <CreateInputEffect setAction={context.stAction} />,
+    [context.action]
   )
+
   const memoData = useMemo(
-    () => list.map((elem) => (<TaskEffect id={elem.id} l={list.length} text={elem.text} isActive={elem.isActive} key={elem.id} changeText={changeText} removeElem={removeElem} setAction={setAction}/>))
-    ,[list]);
+    () => context.list.map((elem, i) => (<TaskEffect i={i} id={elem.id}  text={elem.text} isActive={elem.isActive} key={elem.id}  setAction={context.stAction}/>))
+    ,[context.list]);
 
   return (
     <div>
@@ -67,4 +74,7 @@ export const TodoEffect = () => {
     </div>
   );
 };
+
+
+
 

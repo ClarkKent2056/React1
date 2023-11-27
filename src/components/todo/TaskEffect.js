@@ -1,19 +1,20 @@
-import React, { memo } from "react";
+import React, { memo, useCallback } from "react";
 import { useState } from "react";
 import { T } from './TodoEffect'
 const TaskEffect = (props) => {
-  // const [status, setStatus] = useState(props.isActive)
+  
   const [inp, setInp] = useState(false);
   const [text, setText] = useState(props.text);
-
-  const removeEl = () => props.removeElem(props.id);
+  console.log(`Task ${props.i}`)
+  const removeEl = () => props.setAction({id : props.id, type : T.REMOVE});
   const checkboxChange = (e) => props.setAction({s : e.target.checked, id : props.id, type : T.CHANGE_ACTIVE})
   
-  const saveText = () => {
+  const saveText = useCallback(() => {
+    
     setInp(!inp);
     if (text.lenght < 3) return;
-    props.changeText(text, props.id);
-  };
+    props.setAction({"text" : text, id : props.id, type : T.CHANGE_TEXT});
+  },[text, inp])
 
   return (
     <div className={`displayflex task ${props.isActive ? "green" : "blue"}`}>
@@ -38,10 +39,7 @@ const TaskEffect = (props) => {
   );
 };
 const memoFnc = (prevProps, nextProps) => {
-  return false
-  if (prevProps.l !== nextProps.l) return false;
-  if (prevProps.isActive === nextProps.isActive) return true;
-
-  // console.log(prevProps.isActive,nextProps.isActive);
+  
+  return (prevProps.text == nextProps.text && prevProps.isActive == nextProps.isActive)
 };
 export default memo(TaskEffect, memoFnc);

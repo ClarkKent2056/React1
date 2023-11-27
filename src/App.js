@@ -1,56 +1,77 @@
-
-import Contact from './components/contact/Contact';
-import './App.css';
-import { Todo } from './components/todo/Todo';
-import { Route, Routes } from 'react-router-dom';
-import { Home } from './components/Home'
-import Settings from './components/Settings'
-import AboutMe from './components/AboutMe'
-import Header from './components/Header'
-import { TodoEffect } from './components/todo/TodoEffect'
-// import Contact from './component/'
-
-
+import Contact from "./components/contact/Contact";
+import id from "shortid";
+import "./App.css";
+import { Todo } from "./components/todo/Todo";
+import { Route, Routes } from "react-router-dom";
+import { Home } from "./components/Home/Home";
+import Settings from "./components/Settings";
+import AboutMe from "./components/aboutMe/AboutMe";
+import Header from "./components/Header";
+import { TodoEffect } from "./components/todo/TodoEffect";
+import { Context, store } from "./store/context";
+import { contextToDo, dataToDo } from "./store/todo.context";
+import { useState } from "react";
 const data = [
   {
-    name : 'Alex',
-    phone : '098 123 34 54',
-    data : ['own', 'bod','fff','aqw', 'jhhjj'],
+    text: "some text",
+    id: id(),
+    isActive: false,
   },
   {
-    name : 'Robert',
-    phone : '098 123 34 74',
-    data : ['own', 'aqw'],
+    text: "new home",
+    id: id(),
+    isActive: true,
   },
-  {
-    name : 'Name',
-    phone : '098 613 34 54',
-    data : ['own','fff','aqw'],
-  },
-  {
-    name : 'UO',
-    phone : '098 823 34 54',
-    data : ['own', 'bod','green'],
-  },
-]
-// const contacts = data.map( contact => <Contact name={contact.name} key={contact.phone} phone={contact.phone} data={contact.data} />)
-{/* {contacts} */}
+];
 
 function App() {
+  const [theme, setTheme] = useState(store);
+  const [action, setAction] = useState({})
+  const [user, setUser] = useState({
+    name: "",
+  });
+  const [list, setList] = useState(dataToDo)
+  const changeList = (elem) => setList(elem)
+  const stAction = (elem) => setAction(elem)
+  const changeThemeBg = (data) => setTheme({ ...theme, bg: data });
+
   return (
     <div className="App">
-      <Header /> 
-      {/* <Todo /> */}
-      <Routes>
-          <Route  path="/" element={<Home />} />
-          <Route  path="/todo" element={<Todo />} />
-          <Route  path="/settings" element={<Settings />} />
-          <Route  path="/aboutMe" element={<AboutMe />} />
-          <Route  path="/todoEffect" element={<TodoEffect />} />
-      </Routes>
+      <Context.Provider
+        value={{
+          theme,
+          user,
+          change: {
+            changeThemeBg,
+          },
+        }}
+      >
+        <contextToDo.Provider value={{list, changeList,action, stAction}}>
+          <Header />
+          {/* <Todo /> */}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/todo" element={<Todo />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/aboutMe" element={<AboutMe />} />
+            <Route path="/todoEffect" element={<TodoEffect />} />
+          </Routes>
+        </contextToDo.Provider>
+      </Context.Provider>
     </div>
   );
 }
 
-
 export default App;
+
+// const theme=  {
+//   color : 'grey',
+//   bg : 'grey'
+// }
+// const  user = {
+//   name : 'asdas'
+// }
+
+// const all = {...theme, data : 1, ...user}
+
+// console.log(all);
